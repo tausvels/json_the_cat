@@ -1,25 +1,7 @@
 const request = require("request");
-const modifyInputParam = function(str) {
-  let arr = str.split("");
-  if (arr.length < 4) {
-    return str;
-  } else {
-    let temp = [];
-    for (let i = 0; i < 4; i++) {
-      temp.push(arr[i]);
-    }
-    return temp.join("");
-  }
-};
 
 const fetchBreedDescription = function(breedName, callback) {
-  let breedNameInput;
-  if(breedName.length > 5){
-    breedNameInput = modifyInputParam(breedName)
-  }else{
-    breedNameInput = breedName;
-  }
-  let endpoint = `https://api.thecatapi.com/v1/images/search?breed_ids=${breedNameInput}`;
+  let endpoint = `https://api.thecatapi.com/v1/images/search?breed_ids=${breedName}`;
   request(endpoint, (error, response, body) => {
     if (error) {
       callback(error);
@@ -27,7 +9,7 @@ const fetchBreedDescription = function(breedName, callback) {
       const leng = (JSON.parse(body)).length;
       let noResults = false;
       if(leng === 0){
-        noResults = true;   // Returns an empty array and hence returns true.
+        noResults = true
       }  
       if (noResults) {
         callback("Data not Found!!")
