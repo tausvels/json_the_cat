@@ -1,24 +1,22 @@
 const request = require("request");
-const modifyInputParam = function(str) {
-  let arr = str.split("");
-  if (arr.length < 4) {
-    return str;
-  } else {
-    let temp = [];
-    for (let i = 0; i < 4; i++) {
-      temp.push(arr[i]);
-    }
-    return temp.join("");
-  }
-};
+
 
 const fetchBreedDescription = function(breedName, callback) {
-  let breedNameInput;
-  if(breedName.length > 5){
-    breedNameInput = modifyInputParam(breedName)
-  }else{
-    breedNameInput = breedName;
-  }
+  const modifyInputParam = function(str) {
+    let arr = str.split("");
+    if (arr.length < 4) {
+      return str;
+    } else {
+      let temp = [];
+      for (let i = 0; i < 4; i++) {
+        temp.push(arr[i]);
+      }
+      return temp.join("");
+    }
+  };
+  if(breedName === null){return}
+  breedNameInput = modifyInputParam(breedName);
+
   let endpoint = `https://api.thecatapi.com/v1/images/search?breed_ids=${breedNameInput}`;
   request(endpoint, (error, response, body) => {
     if (error) {
@@ -42,10 +40,12 @@ const fetchBreedDescription = function(breedName, callback) {
 
 const callbackForFetchFunction = (error, desc) => {
   if (error) {
-    console.log('Error fetch details:', error);
+    //console.log('Error fetch details:', error);
+    return error;
   } else {
-    console.log(desc);
+    //console.log(desc);
+    return error
   }
 }
-const breedName = process.argv[2];
-fetchBreedDescription(breedName, callbackForFetchFunction);
+//fetchBreedDescription(breedName, callbackForFetchFunction);
+module.exports = {fetchBreedDescription};
